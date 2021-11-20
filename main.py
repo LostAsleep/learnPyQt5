@@ -1,21 +1,33 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
-import sys  # Only needed for access to command line arguments.
+
+import sys  # Needed for access to command line arguments.
 
 
-# You need on (and only one) QApplication instance per application.
-# Pass in sys.argv to allow command line arguments for your app.
-# If you know you won't use command line arguments QApplication([]) works. too.
+# Subclass QMainWindow to customize your application's main window
+class MainWindow(QMainWindow):
+
+    def __init__(self, *args, **kwargs):
+        super(MainWindow, self).__init__(*args, **kwargs)
+
+        self.setWindowTitle("My First App")
+
+        label = QLabel("This is interesting.")
+
+        # The 'Qt' namespace has a lot of attributes to customize
+        # widgets. See: https://doc.qt.io/qt-5/qt.html
+        label.setAlignment(Qt.AlignCenter)
+
+        # Set the central widget of the Window. Widget will expand
+        # to take up all the space in the window by default.
+        self.setCentralWidget(label)  # QMainWindow specific function
+
+
 app = QApplication(sys.argv)
 
-window = QMainWindow()
-window.show()  # IMPORTANT! Windows are hidden by default
+window = MainWindow()
+window.show()
 
-# Start the event loop.
 app.exec_()
-
-
-# Your application won't reach here until you exit and the
-# event loop has stopped.
 
