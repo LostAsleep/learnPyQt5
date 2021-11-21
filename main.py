@@ -14,14 +14,30 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("My First App")
 
         label = QLabel("This is interesting.")
-
-        # The 'Qt' namespace has a lot of attributes to customize
-        # widgets. See: https://doc.qt.io/qt-5/qt.html
         label.setAlignment(Qt.AlignCenter)
 
-        # Set the central widget of the Window. Widget will expand
-        # to take up all the space in the window by default.
-        self.setCentralWidget(label)  # QMainWindow specific function
+        self.setCentralWidget(label)
+
+        toolbar = QToolBar("The main toolbar")
+        # Prevent the toolbar from being removed via right-click menu
+        toolbar.setContextMenuPolicy(Qt.PreventContextMenu)
+        self.addToolBar(toolbar)
+        
+        # You must also pass in any QObject to act as the parent for the action
+        # here we’re passing self as a reference to our main window. Strangely
+        # for QAction the parent element is passed in as the final parameter.
+        button_action = QAction("Your button", self)
+        button_action.setStatusTip("This is your button")  # For the status bar
+        button_action.triggered.connect(self.onMyToolBarButtonClick)
+        button_action.setCheckable(True)
+        toolbar.addAction(button_action)
+
+        self.setStatusBar(QStatusBar(self))
+
+
+    def onMyToolBarButtonClick(self, s):
+        """The signal passed indicates whether the button is checked and returns a bool."""
+        print("click", s)
 
 
 app = QApplication(sys.argv)
